@@ -25,17 +25,23 @@ public class ServicoPais{
     public ResponseEntity<List<PaisDTO>> listar(){ //encapsula o retorno para manipular a saida
         // return ResponseEntity.ok(paises);
 
-        
+        List resultade = new arrayList<>();
+        for(Pais entidade: dao.findAll()){
+            resultado.add(PaisDTO.convertFromEntidade(entidade));
+        }
 
-        return ResponseEntity.ok(dao.findAll());
+        return ResponseEntity.ok(resultado);
     }
 
     @PostMapping("/servico/pais") //http post:8080/servico/pais codigoTelfone = xx nome ="x" siga="xx"
     public ResponseEntity<PaisDTO> criar(@RequestBody PaisDTO pais){
-        pais.setId(paises.size() + 1);
-        paises.add(pais);
+        // pais.setId(paises.size() + 1);
+        // paises.add(pais);
 
-        return ResponseEntity.status(201).body(pais); //cod que informa ok
+        // return ResponseEntity.status(201).body(pais); //cod que informa ok
+        dao.save(PaisDTO.convertFromDTO(pais));
+
+        return ResponseEntity.status(201).body(PaisDTO.convertFromEntidade(paisSalvo));
     }
 
     @DeleteMapping("/servico/pais/{id}") //http delete:8080/serivo/pais/1

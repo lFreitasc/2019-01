@@ -18,7 +18,7 @@ public class PaisDTO {
         return entidade;
     }
 
-    public static Pais convervToDTO(PaisDTO pais){
+    public static Pais convervFromEntity(PaisDTO pais){
         // Pais entidade = Pais.builder().id(new Long(pais.getId())).nome(pais.getNome()).sigla(pais.getSilga()).codigoTelefone(pais.getCodigoTelefone()).build();
         // return entidade;
         PaisDTO dto = PaisDTO.builder().id(Integer.parseInt(String.valueOf(pais.getId())).nome(pais.getNome()).sigla(pais.getSilga()).codigoTelefone(pais.getCodigoTelefone()).build();
