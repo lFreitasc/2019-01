@@ -7,19 +7,27 @@ import br.edu.utfpr.dto.PaisDTO;
 */
 @RestController
 public class ServicoPais{
-    List<PaisDTO> paises;
+    private List<PaisDTO> paises;
+    private PaisDAO dao;
 
-    public ServicoPais(){
+    @Autowired //instanciado automaticamente
+    public ServicoPais(PaisDAO aDao){
         paises = Stream.of(
             PaisDTO.builder().id(1).codigoTelefone(55).nome("Brasil").sigla("BR").build();
             PaisDTO.builder().id(2).codigoTelefone(33).nome("Estados Unidos da America").sigla("USA").build();
             PaisDTO.builder().id(3).codigoTelefone(44).nome("Reino Unido").sigla("RU").build();
         ).collect(Collectors.toList());
+
+        this.dao = aDao;
     }
 
     @GetMapping("/servico/pais")
     public ResponseEntity<List<PaisDTO>> listar(){ //encapsula o retorno para manipular a saida
-        return ResponseEntity.ok(paises);
+        // return ResponseEntity.ok(paises);
+
+        
+
+        return ResponseEntity.ok(dao.findAll());
     }
 
     @PostMapping("/servico/pais") //http post:8080/servico/pais codigoTelfone = xx nome ="x" siga="xx"
@@ -54,8 +62,15 @@ public class ServicoPais{
 
     @GetMapping("/servico/pais/{id}")
     public ResponseEntity<PaisDTO> listar(@PathVariable int id){
-        Option<PaisDTO> pais = paises.stream().filter(p -> p.getId() == id).findAny()//retorna o primeiro que encontrar
-        return ResponseEntity.of(pais)
+        // Option<PaisDTO> pais = paises.stream().filter(p -> p.getId() == id).findAny()//retorna o primeiro que encontrar
+        // return ResponseEntity.of(pais)
+    
+        PaisDTO.convertFromEntidade(dao.findById(new Long(id)).get());
+        
+
+        return ResponseEntity.ok(pais);
     }
+
+
 
 }
